@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50" viewBox="0 0 200 50">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .quick { fill: #0F766E; }
+    .med { fill: #06B6D4; }
+    .icon { fill: #FB923C; }
+  </style>
+  <g transform="translate(10,35)">
+    <path class="icon" d="M15,0 A15,15 0 1,1 15,30 A15,15 0 1,1 15,0 M13,8 L17,8 L17,13 L22,13 L22,17 L17,17 L17,22 L13,22 L13,17 L8,17 L8,13 L13,13 Z"/>
+    <text x="40" y="5" class="logo-text quick">Quick</text>
+    <text x="95" y="5" class="logo-text med">Med</text>
+  </g>
+</svg>
