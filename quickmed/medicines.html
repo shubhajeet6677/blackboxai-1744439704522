@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Medicines - QuickMed</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0F766E',
+                        secondary: '#06B6D4',
+                        accent: '#FB923C',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-slate-800 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html">
+                        <img src="data:image/png;base64,{{BASE64_ENCODED_LOGO}}" alt="QuickMed Logo" class="h-10">
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-700">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <a href="prescription.html" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-orange-500">
+                        <i class="fas fa-file-medical mr-2"></i>Upload Prescription
+                    </a>
+                    <button class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                    </button>
+                    <a href="auth/login.html" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-teal-800">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search and Filters -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Filters Sidebar -->
+            <div class="w-full md:w-64 bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Filters</h3>
+                
+                <!-- Categories -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-slate-700 dark:text-slate-300 mb-2">Categories</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">OTC Only</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">Cold-chain</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">Prescription Required</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Delivery Time -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-slate-700 dark:text-slate-300 mb-2">Delivery Time</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="delivery" class="text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">15 Minutes</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="delivery" class="text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">30 Minutes</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="delivery" class="text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">1 Hour</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-slate-700 dark:text-slate-300 mb-2">Rating</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="rating" class="text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">4★ & above</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="rating" class="text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                            <span class="ml-2 text-slate-600 dark:text-slate-400">3★ & above</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div>
+                    <h4 class="font-medium text-slate-700 dark:text-slate-300 mb-2">Availability</h4>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-700">
+                        <span class="ml-2 text-slate-600 dark:text-slate-400">In Stock Nearby</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="flex-1">
+                <!-- Search Bar -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <input type="text" class="w-full h-12 pl-12 pr-4 rounded-lg border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:border-primary" placeholder="Search by name, salt, brand, or disease...">
+                        <div class="absolute left-4 top-4 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Medicine Card -->
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-semibold text-slate-800 dark:text-white">Paracetamol 500mg</h3>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">By Johnson & Johnson</p>
+                            </div>
+                            <div class="flex items-center bg-green-100 dark:bg-green-900 px-2 py-1 rounded">
+                                <i class="fas fa-star text-yellow-400 text-sm mr-1"></i>
+                                <span class="text-green-800 dark:text-green-200 text-sm">4.5</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-primary font-semibold">₹25.00</div>
+                            <div class="text-sm text-green-600 dark:text-green-400">
+                                <i class="fas fa-check-circle mr-1"></i>In Stock
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-slate-600 dark:text-slate-400">
+                                <i class="fas fa-clock mr-1"></i>15 mins delivery
+                            </div>
+                            <button class="bg-primary text-white px-4 py-2 rounded hover:bg-teal-800">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- More Medicine Cards (Similar Structure) -->
+                    <!-- Add more medicine cards here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/darkMode.js"></script>
+    <script>
+        // Simulated real-time availability checker
+        function checkAvailability() {
+            const medicines = document.querySelectorAll('.medicine-card');
+            medicines.forEach(medicine => {
+                const random = Math.random();
+                const status = medicine.querySelector('.availability-status');
+                if (random > 0.8) {
+                    status.innerHTML = '<i class="fas fa-times-circle mr-1"></i>Out of Stock';
+                    status.className = 'text-sm text-red-600 dark:text-red-400';
+                }
+            });
+        }
+
+        // Run availability check every 30 seconds
+        setInterval(checkAvailability, 30000);
+    </script>
+</body>
+</html>
