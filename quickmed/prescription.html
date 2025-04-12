@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Prescription - QuickMed</title>
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <!-- Tesseract.js for OCR -->
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+</head>
+<body class="bg-gradient-pattern min-h-screen dark:bg-slate-900 theme-transition">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 backdrop-blur-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="hover-lift">
+                        <img src="assets/images/logo.svg" alt="QuickMed Logo" class="h-10">
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg glass ripple text-white">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <a href="cart.html" class="relative text-white hover:text-primary">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                    <a href="auth/login.html" class="glass text-white px-4 py-2 rounded-lg hover-lift ripple">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Upload Section -->
+    <div class="container mx-auto px-4 pt-24 pb-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass rounded-xl p-8">
+                <h1 class="text-3xl font-bold text-white mb-8 font-poppins text-center">Upload Prescription</h1>
+                
+                <!-- Upload Options -->
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <!-- Camera Upload -->
+                    <div class="upload-card text-center hover:bg-white/10 group">
+                        <div class="w-20 h-20 glass rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-camera text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Capture with Camera</h3>
+                        <p class="text-white/70 mb-6 text-lg">Take a clear photo of your prescription</p>
+                        <button onclick="startCamera()" class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 ripple font-medium text-lg w-full sm:w-auto">
+                            Open Camera
+                        </button>
+                        <video id="camera" class="hidden w-full mt-6 rounded-lg"></video>
+                        <button onclick="capturePhoto()" class="hidden mt-4 bg-accent text-white px-8 py-3 rounded-lg hover:bg-accent/90 ripple font-medium text-lg w-full sm:w-auto" id="captureBtn">
+                            Capture Photo
+                        </button>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="upload-card text-center hover:bg-white/10 group">
+                        <div class="w-20 h-20 glass rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-file-upload text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Upload File</h3>
+                        <p class="text-white/70 mb-6 text-lg">Upload prescription image or PDF</p>
+                        <label class="cursor-pointer w-full sm:w-auto">
+                            <div class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 ripple font-medium text-lg inline-block w-full sm:w-auto">
+                                Choose File
+                            </div>
+                            <input type="file" class="hidden" accept="image/*,.pdf" onchange="handleFileUpload(event)">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div id="previewSection" class="hidden">
+                    <h3 class="text-2xl font-semibold text-white mb-6">Preview</h3>
+                    <div class="preview-container">
+                        <img id="preview" class="max-w-full h-auto rounded-lg mx-auto">
+                        <div id="ocrProgress" class="hidden mt-6">
+                            <div class="flex items-center justify-between text-white/70 mb-2">
+                                <span class="text-lg">Processing OCR</span>
+                                <span id="ocrPercentage" class="text-lg">0%</span>
+                            </div>
+                            <div class="ocr-progress-bar">
+                                <div id="ocrProgressBar" class="ocr-progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div id="ocrResult" class="hidden mt-6 p-6 glass rounded-lg">
+                            <h4 class="text-white font-semibold mb-3 text-lg">Extracted Text</h4>
+                            <p id="ocrText" class="text-white/70 text-lg leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button onclick="submitPrescription()" class="bg-accent text-white px-10 py-4 rounded-lg hover:bg-accent/90 ripple font-medium text-lg">
+                            Submit for Verification
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Section -->
+                <div id="statusSection" class="hidden mt-8">
+                    <h3 class="text-2xl font-semibold text-white mb-6">Verification Status</h3>
+                    <div class="glass p-8 rounded-lg">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center">
+                                <div id="statusIcon" class="w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-spinner fa-spin text-primary text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 id="statusText" class="font-semibold text-white text-xl mb-1">Under Review</h4>
+                                    <p id="statusDescription" class="text-white/70 text-lg">Our AI is analyzing your prescription</p>
+                                </div>
+                            </div>
+                            <div id="statusTime" class="text-lg text-white/70">Just now</div>
+                        </div>
+                        
+                        <!-- Manual Override Section -->
+                        <div id="manualOverride" class="hidden mt-6 p-6 glass rounded-lg bg-orange-500/20">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-orange-400 text-2xl mt-1 mr-4"></i>
+                                <div>
+                                    <h4 class="font-semibold text-white text-xl mb-2">Need Additional Verification?</h4>
+                                    <p class="text-white/70 text-lg mb-4">Connect with a pharmacist for manual verification</p>
+                                    <button onclick="connectPharmacist()" class="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 ripple font-medium">
+                                        Connect to Pharmacist
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Scripts -->
+    <script src="js/darkMode.js"></script>
+    <script src="js/animations.js"></script>
+
+    <script>
+        // Camera handling
+        let stream = null;
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('camera');
+                video.srcObject = stream;
+                video.classList.remove('hidden');
+                document.getElementById('captureBtn').classList.remove('hidden');
+                video.play();
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                alert('Unable to access camera. Please ensure you have granted camera permissions.');
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('camera');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            // Stop camera stream
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Hide camera elements
+            video.classList.add('hidden');
+            document.getElementById('captureBtn').classList.add('hidden');
+            
+            // Show preview and start OCR
+            const imageData = canvas.toDataURL('image/png');
+            document.getElementById('preview').src = imageData;
+            document.getElementById('previewSection').classList.remove('hidden');
+            performOCR(imageData);
+        }
+
+        // File upload handling
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById('previewSection').classList.remove('hidden');
+                    performOCR(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // OCR Processing
+        async function performOCR(imageData) {
+            const ocrProgress = document.getElementById('ocrProgress');
+            const ocrProgressBar = document.getElementById('ocrProgressBar');
+            const ocrPercentage = document.getElementById('ocrPercentage');
+            const ocrResult = document.getElementById('ocrResult');
+            const ocrText = document.getElementById('ocrText');
+
+            ocrProgress.classList.remove('hidden');
+            ocrResult.classList.add('hidden');
+
+            try {
+                const worker = await Tesseract.createWorker({
+                    logger: progress => {
+                        if (progress.status === 'recognizing text') {
+                            const percent = Math.round(progress.progress * 100);
+                            ocrProgressBar.style.width = `${percent}%`;
+                            ocrPercentage.textContent = `${percent}%`;
+                        }
+                    }
+                });
+
+                await worker.loadLanguage('eng');
+                await worker.initialize('eng');
+                const result = await worker.recognize(imageData);
+                await worker.terminate();
+
+                ocrText.textContent = result.data.text;
+                ocrResult.classList.remove('hidden');
+            } catch (error) {
+                console.error('OCR Error:', error);
+                ocrText.textContent = 'Error processing image. Please try again.';
+                ocrResult.classList.remove('hidden');
+            }
+        }
+
+        // Prescription submission and status tracking
+        async function submitPrescription() {
+            document.getElementById('statusSection').classList.remove('hidden');
+            
+            // Simulate AI verification process
+            setTimeout(() => {
+                const random = Math.random();
+                if (random < 0.7) {
+                    updateStatus('approved');
+                } else if (random < 0.9) {
+                    updateStatus('issue');
+                } else {
+                    updateStatus('manual');
+                }
+            }, 3000);
+        }
+
+        function updateStatus(status) {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            const statusDescription = document.getElementById('statusDescription');
+            const manualOverride = document.getElementById('manualOverride');
+
+            switch(status) {
+                case 'approved':
+                    statusIcon.innerHTML = '<i class="fas fa-check-circle text-green-400 text-2xl"></i>';
+                    statusText.textContent = 'Approved';
+                    statusDescription.textContent = 'Your prescription has been verified';
+                    break;
+                    
+                case 'issue':
+                    statusIcon.innerHTML = '<i class="fas fa-exclamation-circle text-red-400 text-2xl"></i>';
+                    statusText.textContent = 'Issue Found';
+                    statusDescription.textContent = 'There might be an issue with your prescription';
+                    manualOverride.classList.remove('hidden');
+                    break;
+                    
+                case 'manual':
+                    statusIcon.innerHTML = '<i class="fas fa-user-md text-orange-400 text-2xl"></i>';
+                    statusText.textContent = 'Manual Review Required';
+                    statusDescription.textContent = 'Additional verification needed';
+                    manualOverride.classList.remove('hidden');
+                    break;
+            }
+        }
+
+        function connectPharmacist() {
+            // In a real application, this would initiate a chat or call with a pharmacist
+            alert('Connecting to available pharmacist... Please wait.');
+        }
+
+        // Handle back button
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
