@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickMed - Medicine Delivery in 15 Minutes</title>
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .bg-gradient-pattern {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(15, 118, 110, 0.2) 100%),
+                        radial-gradient(circle at top right, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+        
+        .dark .bg-gradient-pattern {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%),
+                        radial-gradient(circle at top right, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-gradient-pattern min-h-screen dark:bg-slate-900 theme-transition">
+    <!-- Background Circles -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-10 rounded-full filter blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary opacity-10 rounded-full filter blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 backdrop-blur-lg border-b border-white/10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="hover-lift">
+                        <img src="assets/images/logo.svg" alt="QuickMed Logo" class="h-10">
+                    </a>
+                </div>
+                <div class="flex-1 flex items-center justify-center px-6">
+                    <div class="w-full max-w-lg">
+                        <div class="relative">
+                            <input type="text" 
+                                   class="w-full h-10 pl-10 pr-4 py-2 rounded-lg glass input-focus text-white placeholder-white/50"
+                                   placeholder="Search medicines, health products...">
+                            <div class="absolute left-3 top-3 text-white/50">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg glass ripple w-10 h-10 flex items-center justify-center">
+                        <i class="fas fa-moon dark:hidden text-white"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <a href="prescription.html" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-orange-500 ripple btn-pulse whitespace-nowrap">
+                        <i class="fas fa-file-medical mr-2"></i>Upload Prescription
+                    </a>
+                    <a href="cart.html" class="relative text-white hover:text-primary w-10 h-10 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="cart-count hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </a>
+                    <a href="auth/login.html" class="glass text-white px-4 py-2 rounded-lg hover-lift ripple">Login</a>
+                    <a href="auth/admin-login.html" class="glass text-white px-4 py-2 rounded-lg hover-lift ripple">
+                        <i class="fas fa-user-shield mr-2"></i>Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section class="pt-32 pb-16">
+            <div class="container mx-auto">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white font-poppins mb-6 animate-text text-gradient">
+                        Medicine in 15 Minutes.<br>No Compromise.
+                    </h1>
+                    <p class="text-xl text-white/90 mb-8 animate-text" style="animation-delay: 0.2s">
+                        AI-driven medicine delivery system at your doorstep
+                    </p>
+                    <div class="max-w-xl mx-auto animate-text" style="animation-delay: 0.4s">
+                        <div class="relative">
+                            <input type="text" 
+                                   class="w-full h-14 pl-12 pr-4 rounded-lg glass input-focus text-white placeholder-white/50"
+                                   placeholder="Search for medicines...">
+                            <button class="absolute right-2 top-2 bg-accent text-white px-6 py-2 rounded-lg hover:bg-orange-500 ripple btn-pulse">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Categories -->
+        <section class="section-spacing">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-12 font-poppins text-center animate-text">Quick Categories</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                    <!-- Category 1 -->
+                    <div class="category-card animate-fade-in" style="animation-delay: 0.1s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i class="fas fa-thermometer-half text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Fever</h3>
+                        <p class="text-white/70">Quick relief for fever and body ache</p>
+                    </div>
+                    <!-- Category 2 -->
+                    <div class="category-card animate-fade-in" style="animation-delay: 0.2s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i class="fas fa-head-side-cough text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Cold & Cough</h3>
+                        <p class="text-white/70">Effective remedies for cold symptoms</p>
+                    </div>
+                    <!-- Category 3 -->
+                    <div class="category-card animate-fade-in" style="animation-delay: 0.3s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i class="fas fa-pills text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Diabetes</h3>
+                        <p class="text-white/70">Complete diabetes care solutions</p>
+                    </div>
+                    <!-- Category 4 -->
+                    <div class="category-card animate-fade-in" style="animation-delay: 0.4s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i class="fas fa-heartbeat text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Heart Care</h3>
+                        <p class="text-white/70">Cardiac health medications</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section-spacing">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-12 font-poppins text-center animate-text">Why Choose QuickMed?</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <!-- Feature 1 -->
+                    <div class="feature-card animate-fade-in" style="animation-delay: 0.1s">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-truck text-primary text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4 text-white">15-Minute Delivery</h3>
+                        <p class="text-white/80">Lightning-fast delivery at your doorstep, because every minute counts.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="feature-card animate-fade-in" style="animation-delay: 0.2s">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-shield-alt text-primary text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4 text-white">Genuine Medicines</h3>
+                        <p class="text-white/80">100% authentic medicines sourced directly from authorized distributors.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="feature-card animate-fade-in" style="animation-delay: 0.3s">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-user-md text-primary text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4 text-white">Expert Support</h3>
+                        <p class="text-white/80">24/7 access to healthcare professionals for your medical queries.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Banner -->
+        <section class="section-spacing">
+            <div class="container mx-auto">
+                <div class="trust-banner">
+                    <!-- Stat 1 -->
+                    <div class="trust-item animate-fade-in" style="animation-delay: 0.1s">
+                        <i class="fas fa-users text-primary text-3xl"></i>
+                        <div>
+                            <div class="text-2xl font-bold text-white">100,000+</div>
+                            <div class="text-white/80">Trusted Users</div>
+                        </div>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="trust-item animate-fade-in" style="animation-delay: 0.2s">
+                        <i class="fas fa-clock text-primary text-3xl"></i>
+                        <div>
+                            <div class="text-2xl font-bold text-white">15 mins</div>
+                            <div class="text-white/80">Average Delivery</div>
+                        </div>
+                    </div>
+                    <!-- Stat 3 -->
+                    <div class="trust-item animate-fade-in" style="animation-delay: 0.3s">
+                        <i class="fas fa-store text-primary text-3xl"></i>
+                        <div>
+                            <div class="text-2xl font-bold text-white">500+</div>
+                            <div class="text-white/80">Partner Stores</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass mt-16 border-t border-white/10">
+        <div class="container mx-auto py-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-white">QuickMed</h3>
+                    <p class="text-white/70">Your trusted partner for fast and reliable medicine delivery.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-white/70">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-white">Legal</h4>
+                    <ul class="space-y-2 text-white/70">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-white">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white/70 hover:text-white transition-colors">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-white/70 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-white/70 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-white/70 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 mt-8 pt-8 text-center text-white/70">
+                <p>&copy; 2024 QuickMed. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load Scripts -->
+    <script src="js/darkMode.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>
